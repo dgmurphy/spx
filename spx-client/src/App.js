@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import { Button, TextArea } from "@blueprintjs/core";
 import autobind from 'react-autobind';
+import displaCy from './displacy'
 
 class App extends Component {
 
@@ -17,6 +18,8 @@ class App extends Component {
         "and the agony of defeat.",
       nlpResults: ""
     }
+
+    
 
   }
 
@@ -58,12 +61,24 @@ class App extends Component {
 
   componentDidMount() {
     //this.callAPI();
+    this.displacy = new displaCy('http://localhost:9000/test-display', {container: '#displacy'})
   }
 
   sendText() {
     this.postText()
     //this.callAPI()
     //this.setState({ nlpResults: this.state.textContent})
+  }
+
+
+  parse() {
+    console.log("parse")
+    let text = "This is a test sentence."
+    this.displacy.parse(text)
+  }
+
+  parseTest() {
+    console.log("parse test")
   }
 
   render() {
@@ -80,6 +95,10 @@ class App extends Component {
          <Button onClick={this.sendText}>Submit</Button>
          <div className="nlp-div">
            <p className="nlp-results">{this.state.apiResponse}</p>
+         </div>
+         <Button onClick={this.parse}>Render</Button>
+         <div id="displacy">
+          &nbsp;
          </div>
 
       </div>
