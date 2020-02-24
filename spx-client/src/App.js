@@ -37,7 +37,7 @@ class App extends Component {
 
     console.log(this.state.textContent)
     let posttext = this.state.textContent
-    fetch('http://localhost:9000/test-py', {
+    fetch('/test-py', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ 'text': posttext})
