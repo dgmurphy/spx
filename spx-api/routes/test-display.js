@@ -33,9 +33,11 @@ function execPy(res) {
 
         let test='{"words":[{"text": "This", "tag": "DET"},{"text": "is", "tag": "AUX"},{"text": "a", "tag": "DET"},{"text": "test", "tag": "NOUN"},{"text": "sentence.", "tag": "NOUN"}],"arcs":[{"start": 0, "end": 1, "label": "nsubj", "dir": "left"},{"start": 2, "end": 4, "label": "det", "dir": "left"},{"start": 3, "end": 4, "label": "compound", "dir": "left"}, {"start": 1, "end": 4, "label": "attr", "dir": "right"}],"settings": {"lang": "en", "direction": "ltr"}}'
 
-        jsonData = data.toString()
-        console.log(jsonData)
-        res.send(test);
+
+        //jsonData = JSON.parse(data)
+        //jsonData = data.toString()
+        console.log(data)
+        res.send(data);
     })
 
 }
