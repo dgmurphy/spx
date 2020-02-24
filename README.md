@@ -10,6 +10,8 @@ Download spacy models
 
 e.g. python -m spacy download en_core_web_sm (or the larger one for ner)
 
+source env/bin/activate
+
 
 ## To launch express:   
 cd spx-api
