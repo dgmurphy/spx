@@ -16,6 +16,8 @@ with open(path,'r') as f:
 
 doc = nlp(text)
 
+sentence_spans = list(doc.sents)
+
 parse_dict = displacy.parse_deps(doc)
 
 parsed_json = json.dumps(parse_dict)
