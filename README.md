@@ -1,6 +1,16 @@
 # spx
 Express React spaCy
 
+## Setup
+Install python3
+
+Create venv and install spaCy
+
+Download spacy models
+
+e.g. python -m spacy download en_core_web_sm (or the larger one for ner)
+
+
 ## To launch express:   
 cd spx-api
 
@@ -16,3 +26,5 @@ cd spx-client
 npm install
 
 npm start
+
+
