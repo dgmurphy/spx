@@ -35,19 +35,6 @@ class App extends Component {
   }
 
 
-  postText() {
-    let self = this
-
-    console.log(this.state.textContent)
-    let posttext = this.state.textContent
-    fetch('/test-py', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ 'text': posttext})
-    }).then((res) => res.json())
-      .then((data) => self.logdata(data))
-      .catch((err) => console.log(err))
-  }
 
   logres(res) {
     console.log("res: " + res)
@@ -64,17 +51,21 @@ class App extends Component {
     this.displacy = new displaCy('http://localhost:9000/test-display', {container: '#displacy'})
   }
 
-  sendText() {
-    this.postText()
-    //this.callAPI()
-    //this.setState({ nlpResults: this.state.textContent})
-  }
-
 
   parse() {
-    console.log("parse")
-    let text = "This is a test sentence."
-    this.displacy.parse(text)
+
+    let self = this
+
+    console.log(this.state.textContent)
+    let posttext = this.state.textContent
+    fetch('/test-py', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ 'text': posttext})
+    }).then((res) => res.json())
+      .then((data) => self.logdata(data))
+      .then(self.displacy.parse())
+      .catch((err) => console.log(err))
   }
 
   parseTest() {
@@ -92,11 +83,11 @@ class App extends Component {
             rows={6} cols={50}
             />
         </div>
-         <Button onClick={this.sendText}>Submit</Button>
+         <Button onClick={this.parse}>Render</Button>
          <div className="nlp-div">
            <p className="nlp-results">{this.state.apiResponse}</p>
          </div>
-         <Button onClick={this.parse}>Render</Button>
+
          <div id="displacy">
           &nbsp;
          </div>

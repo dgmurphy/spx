@@ -11,7 +11,6 @@ router.post('/', (req, res) => {
 
 function execPy(res) {
 
-    
     // Use child_process.spawn method from  
     // child_process module and assign it 
     // to variable spawn 
@@ -26,16 +25,12 @@ function execPy(res) {
     // so, first name = Mike and last name = Will 
     var process = spawn('python3', ["./py/display_dep.py"])
 
+    const ls = spawn('ls', ['-lh', '.']);
 
     // Takes stdout data from script which executed 
     // with arguments and send this data to res object 
     process.stdout.on('data', function (data) {
 
-        let test='{"words":[{"text": "This", "tag": "DET"},{"text": "is", "tag": "AUX"},{"text": "a", "tag": "DET"},{"text": "test", "tag": "NOUN"},{"text": "sentence.", "tag": "NOUN"}],"arcs":[{"start": 0, "end": 1, "label": "nsubj", "dir": "left"},{"start": 2, "end": 4, "label": "det", "dir": "left"},{"start": 3, "end": 4, "label": "compound", "dir": "left"}, {"start": 1, "end": 4, "label": "attr", "dir": "right"}],"settings": {"lang": "en", "direction": "ltr"}}'
-
-
-        //jsonData = JSON.parse(data)
-        //jsonData = data.toString()
         console.log(data)
         res.send(data);
     })
@@ -46,9 +41,28 @@ function execPy(res) {
 function callName(req, res) {
 
     //console.log(req.body)
-    execPy(res)
+
+    let filePath = __dirname.substring(0, __dirname.lastIndexOf("/"))
+    filePath += '/py/uploads/upload.txt';
+
+    let content = req.body.text
+
+    fs.writeFile(filePath, content, (err) => {
+        if (err) {
+            console.error(err)
+            return
+        }
+
+        console.log("//file written successfully")
+        execPy(res)
+
+    })
 
 }
 
+
+// router.get('/', function(req, res, next) {
+//     res.send('API is working properly');
+// });
 
 module.exports = router;
