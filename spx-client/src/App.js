@@ -41,7 +41,7 @@ class App extends Component {
 
   componentDidMount() {
    
-    this.displacy = new displaCy('/test-display', {container: '#displacy'})
+    this.displacy = new displaCy('http://localhost:9000/test-display', {container: '#displacy'})
   }
 
 
