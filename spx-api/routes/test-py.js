@@ -44,7 +44,7 @@ function callName(req, res) {
     //console.log(req.body)
 
     let filePath = __dirname.substring(0, __dirname.lastIndexOf("/"))
-    filePath += '/py/uploads/upload.txt';
+    filePath += '/py/uploads/parse-upload.txt';
 
     let content = req.body.text
 

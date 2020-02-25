@@ -6,7 +6,7 @@ import json
 nlp = spacy.load("en_core_web_sm")
 
 cwd = os.getcwd()
-path = cwd + "/py/uploads/upload.txt"
+path = cwd + "/py/uploads/display-upload.txt"
 
 #print(path)
 

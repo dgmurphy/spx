@@ -57,7 +57,7 @@ class App extends Component {
       body: JSON.stringify({ 'text': posttext})
     }).then((res) => res.json())
       .then((data) => self.logdata(data))
-      .then(self.displacy.parse())
+      .then(self.displacy.parse(posttext))
       .catch((err) => console.log(err))
   }
 

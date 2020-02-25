@@ -2,7 +2,7 @@ import spacy
 import os
 
 cwd = os.getcwd()
-path = cwd + "/py/uploads/upload.txt"
+path = cwd + "/py/uploads/parse-upload.txt"
 
 with open(path,'r') as f:
     text = f.read()

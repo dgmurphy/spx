@@ -4,6 +4,7 @@ var router = express.Router();
 
 router.post('/', (req, res) => {
     callName(req, res)
+    //print(str(req.body))
 })
 
 //router.post('/', callName);
@@ -43,11 +44,13 @@ function callName(req, res) {
     //console.log(req.body)
 
     let filePath = __dirname.substring(0, __dirname.lastIndexOf("/"))
-    filePath += '/py/uploads/upload.txt';
+    filePath += '/py/uploads/display-upload.txt';
 
-    let content = req.body.text
+    let content = req.body
+    let jsonStr = JSON.parse(content)
+    text = jsonStr.text
 
-    fs.writeFile(filePath, content, (err) => {
+    fs.writeFile(filePath, text, (err) => {
         if (err) {
             console.error(err)
             return
