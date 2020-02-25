@@ -27,13 +27,6 @@ class App extends Component {
     this.setState({ textContent: textContent.target.value })
   } 
 
-  callAPI() {
-    fetch("http://localhost:9000/test-py")
-      .then(res => res.text())
-      .then(res => this.setState({ apiResponse: res }))
-      .catch(err => err)
-  }
-
 
 
   logres(res) {
@@ -47,8 +40,8 @@ class App extends Component {
 
 
   componentDidMount() {
-    //this.callAPI();
-    this.displacy = new displaCy('http://localhost:9000/test-display', {container: '#displacy'})
+   
+    this.displacy = new displaCy('/test-display', {container: '#displacy'})
   }
 
 
