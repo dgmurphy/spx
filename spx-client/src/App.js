@@ -20,6 +20,13 @@ class App extends Component {
     }
 
     
+    this.devUrl = "http://localhost:9001/"
+    this.prodUrl = "http://10.59.59.47:9001/"
+    this.serverUrl = this.prodUrl
+    if (process.env.NODE_ENV === 'development')
+      this.serverUrl = this.devUrl
+
+    console.log("Server url: " + this.serverUrl)
 
   }
 
@@ -41,17 +48,19 @@ class App extends Component {
 
   componentDidMount() {
    
-    this.displacy = new displaCy('/test-display', {container: '#displacy'})
+    let url = this.serverUrl + 'test-display'
+    this.displacy = new displaCy(url, {container: '#displacy'})
   }
 
 
   parse() {
 
     let self = this
+    let url = this.serverUrl + 'test-py'
 
     console.log(this.state.textContent)
     let posttext = this.state.textContent
-    fetch('/test-py', {
+    fetch(url, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ 'text': posttext})
