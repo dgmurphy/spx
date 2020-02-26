@@ -12,8 +12,10 @@ var testAPIRouter = require('./routes/test-api');
 var testPyRouter = require('./routes/test-py');
 var testDisplayRouter = require('./routes/test-display');
 
-
 var app = express();
+
+// Probably will forget this
+console.log("**** Remember to ACTIVATE the needed Python Virtual Environment! ****")
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
