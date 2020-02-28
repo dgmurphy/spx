@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import { Button, TextArea } from "@blueprintjs/core";
 import autobind from 'react-autobind';
-import displaCy from './displacy'
+import displaCy from './displacy';
+import displaCyENT from './displacy-ent'
+import { DEFAULT_TEXT } from './constants'
 
 class App extends Component {
 
@@ -13,9 +15,7 @@ class App extends Component {
 
     this.state = { 
       apiResponse: "",
-      textContent: "Spanning the globe to bring you the constant variety of sport.\n" +
-        "The thrill of victory,\n" + 
-        "and the agony of defeat.",
+      textContent: DEFAULT_TEXT,
       nlpResults: ""
     }
 
@@ -49,11 +49,30 @@ class App extends Component {
   componentDidMount() {
    
     let url = this.serverUrl + 'test-display'
-    this.displacy = new displaCy(url, {container: '#displacy'})
+    let url_ent = this.serverUrl + 'test-display-ent'
+    this.displacy_dep = new displaCy(url, {container: '#displacy-dep-out'})
+    this.displacy_ent = new displaCyENT(url_ent, 
+      {
+        container: '#displacy-ent-out',
+        defaultText: 'Why does Rice play Texas?',
+        defaultEnts: ['person', 'org', 'date']
+      })
   }
 
 
   parse() {
+
+    const model = 'en';
+    const ents = ['person', 
+      'org', 
+      'gpe', 
+      'loc', 
+      'product', 
+      'date', 
+      'time', 
+      'norp',
+      'mgrs' ];
+    
 
     let self = this
     let url = this.serverUrl + 'test-py'
@@ -66,7 +85,8 @@ class App extends Component {
       body: JSON.stringify({ 'text': posttext})
     }).then((res) => res.json())
       .then((data) => self.logdata(data))
-      .then(self.displacy.parse(posttext))
+      .then(self.displacy_dep.parse(posttext))
+      .then(self.displacy_ent.parse(posttext, model, ents))
       .catch((err) => console.log(err))
   }
 
@@ -86,11 +106,12 @@ class App extends Component {
             />
         </div>
          <Button onClick={this.parse}>Render</Button>
-         <div className="nlp-div">
-           <p className="nlp-results">{this.state.apiResponse}</p>
+
+         <div id="displacy-ent-out">
+          &nbsp;
          </div>
 
-         <div id="displacy">
+         <div id="displacy-dep-out">
           &nbsp;
          </div>
 
