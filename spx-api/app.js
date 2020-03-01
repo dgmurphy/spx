@@ -13,6 +13,8 @@ var testPyRouter = require('./routes/test-py');
 var testDisplayRouter = require('./routes/test-display');
 var testDisplayEntRouter = require('./routes/test-display-ent');
 var testNounChunkRouter = require('./routes/test-noun-chunks');
+var testParseTreeARouter = require('./routes/test-parse-tree-a');
+var testParseTreeBRouter = require('./routes/test-parse-tree-b');
 
 var app = express();
 
@@ -38,6 +40,9 @@ app.use("/test-py", testPyRouter);
 app.use("/test-display", testDisplayRouter);
 app.use("/test-display-ent", testDisplayEntRouter);
 app.use("/test-noun-chunks", testNounChunkRouter);
+app.use("/test-parse-tree-a", testParseTreeARouter);
+app.use("/test-parse-tree-b", testParseTreeBRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

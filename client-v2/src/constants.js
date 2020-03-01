@@ -1,6 +1,17 @@
 const DOC_ONE_SENTENCE = "On 21 February, BFB commanders met at an unknown location in the vicinity of Oghuz, " +
 "//MGRSCOORD: 38TQL070498//, in Vetlia Province, Atropia."
 
+
+const DOC_ONE_PARAGRAPH = 
+ "Iqbal, a senior BFB member " +
+ "responsible for operational planning, assured the commanders that he could acquire " +
+ "the components necessary to build the requested IEDs. Fatemi, a BFB member responsible " +
+ "for transporting supplies from Donovia, provided an update on a shipment of rifles " +
+ "and ammunition scheduled for delivery within the week. The arms shipment was in route " +
+ "from a weapons dealer in Donovia, and being transported to an unidentified safe house " +
+ "in northern Vetlia Province, NFI." 
+
+
 const DOC_IIR_ABRIDGED = 
  "On 21 February, BFB commanders met at an unknown location in the vicinity of Oghuz, " +
  "//MGRSCOORD: 38TQL070498//, in Vetlia Province, Atropia. The purpose of the meeting was " +
@@ -63,4 +74,7 @@ const DOC_FULL_IIR =
  "CLASSIFICATION: UNCLASSIFIED"
 
 
-export { DOC_ONE_SENTENCE,  DOC_IIR_ABRIDGED, DOC_FULL_IIR}
+export { DOC_ONE_SENTENCE,  
+         DOC_ONE_PARAGRAPH, 
+         DOC_IIR_ABRIDGED, 
+         DOC_FULL_IIR}

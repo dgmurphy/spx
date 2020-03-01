@@ -25,10 +25,10 @@ idx = 0
 for chunk in doc.noun_chunks:
     idx += 1
     chunk_dict = {
-        'chunk-text': chunk.text,
-        'chunk-root-text': chunk.root.text,
-        'chunk-root-dep': chunk.root.dep_,
-        'chunk-root-head-text': chunk.root.head.text
+        'text': chunk.text,
+        'root': chunk.root.text,
+        'root-dep': chunk.root.dep_,
+        'root-head': chunk.root.head.text
     }
     #print(chunk.text, chunk.root.text, chunk.root.dep_,
     #        chunk.root.head.text)

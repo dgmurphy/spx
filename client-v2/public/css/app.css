@@ -7,6 +7,14 @@
   margin-bottom: 30px;
 }
 
+td {
+  padding-right: 50px;
+}
+
+th {
+  text-align: left;
+}
+
 .nlp-div {
   width: 50%;
   margin-top: 30px;
@@ -22,7 +30,7 @@
 }
 
 #submit {
-  margin-left: 18px;
+  margin-left: 24px;
 }
 
 #displacy-ent-out {

@@ -4,7 +4,8 @@ import { Button, TextArea } from "@blueprintjs/core";
 import autobind from 'react-autobind';
 import displaCy from './displacy';
 import displaCyENT from './displacy-ent'
-import { DOC_FULL_IIR, DOC_IIR_ABRIDGED, DOC_ONE_SENTENCE } from './constants'
+import { DOC_FULL_IIR, DOC_IIR_ABRIDGED, DOC_ONE_SENTENCE,
+         DOC_ONE_PARAGRAPH } from './constants'
 import Table from './Table'
 
 
@@ -17,9 +18,11 @@ class App extends Component {
 
     this.state = { 
       apiResponse: "",
-      textContent: DOC_FULL_IIR,
+      textContent: DOC_ONE_SENTENCE,
       nlpResults: "",
       nounChunks: [],
+      parseTreeA: [],
+      parseTreeB: [],
       entitiesReady: false
     }
 
@@ -66,9 +69,43 @@ class App extends Component {
   analyze() {
     this.parse()
     this.getNounChunks()
+    this.getParseTreeA()
+    this.getParseTreeB()
   }
 
   
+  getParseTreeB() {
+    let self = this
+    let url = this.serverUrl + 'test-parse-tree-b'
+
+    //console.log(this.state.textContent)
+    let posttext = this.state.textContent
+    fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ 'text': posttext})
+    }).then((res) => res.json())
+      .then((data) => self.updateParseTreeB(data))
+      .catch((err) => console.log(err))    
+  }
+
+
+
+  getParseTreeA() {
+    let self = this
+    let url = this.serverUrl + 'test-parse-tree-a'
+
+    //console.log(this.state.textContent)
+    let posttext = this.state.textContent
+    fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ 'text': posttext})
+    }).then((res) => res.json())
+      .then((data) => self.updateParseTreeA(data))
+      .catch((err) => console.log(err))    
+  }
+
   getNounChunks() {
 
     let self = this
@@ -91,6 +128,15 @@ class App extends Component {
     this.setState({nounChunks: data.chunks})
   }
 
+  updateParseTreeA(data) {
+    this.setState({parseTreeA: data.tree})
+  }
+
+  updateParseTreeB(data) {
+    this.setState({parseTreeB: data.tree})
+  }
+
+  
 
   parse() {
 
@@ -134,10 +180,14 @@ class App extends Component {
 
     let entityRenderHeading = <div></div>
     let nounChunksHeading = <div></div>
+    let parseTreeAHeading  =<div></div>
+    let parseTreeBHeading  =<div></div>
 
     if (this.state.entitiesReady) {
       entityRenderHeading = <h2>Entity Render:</h2>
       nounChunksHeading = <h2>Noun Chunks:</h2>
+      parseTreeAHeading = <h2>Parse Tree Table 1</h2>
+      parseTreeBHeading = <h2>Parse Tree Table 2</h2>
     }
 
     return (
@@ -147,9 +197,9 @@ class App extends Component {
 
         <div className="doc-buttons">
 
-          <Button id="onesentence" 
-            onClick={(e)=>this.changeText(DOC_ONE_SENTENCE, e)}>
-            One Sentence
+          <Button 
+            onClick={(e)=>this.changeText(DOC_FULL_IIR, e)}>
+            Complete IIR
           </Button>
 
           <Button 
@@ -157,14 +207,20 @@ class App extends Component {
             Abridged IIR
           </Button>
 
-          <Button 
-            onClick={(e)=>this.changeText(DOC_FULL_IIR, e)}>
-            Complete IIR
+          <Button id="oneparagraph" 
+            onClick={(e)=>this.changeText(DOC_ONE_PARAGRAPH, e)}>
+            One Paragraph
+          </Button>
+
+          <Button id="onesentence" 
+            onClick={(e)=>this.changeText(DOC_ONE_SENTENCE, e)}>
+            One Sentence
           </Button>
 
           <Button id="submit" onClick={this.analyze} intent="primary">
             Submit
           </Button>
+
 
         </div>
 
@@ -192,9 +248,23 @@ class App extends Component {
           </div>
         </div>
 
+        <div className="output-section">
+          {parseTreeAHeading}
+          <div id="parse-tree-a">
+            <Table data={this.state.parseTreeA}/>
+          </div>
+        </div>
+
+        <div className="output-section">
+          {parseTreeBHeading}
+          <div id="parse-tree-b">
+            <Table data={this.state.parseTreeB}/>
+          </div>
+        </div>
+
         <div id="displacy-dep-out">
           &nbsp;
-         </div>
+        </div>
 
       </div>
     )
