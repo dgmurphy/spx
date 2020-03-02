@@ -68,6 +68,7 @@ class App extends Component {
 
   analyze() {
     this.parse()
+    this.getDep()
     this.getNounChunks()
     this.getParseTreeA()
     this.getParseTreeB()
@@ -137,6 +138,21 @@ class App extends Component {
   }
 
   
+  getDep() {
+    let self = this
+    let url = this.serverUrl + 'test-display'
+
+    //console.log(this.state.textContent)
+    let posttext = this.state.textContent
+    fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ 'text': posttext})
+    }).then((res) => res.json())
+      .then(self.displacy_dep.parse(posttext))
+      .catch((err) => console.log(err))
+    }
+
 
   parse() {
 
@@ -182,12 +198,14 @@ class App extends Component {
     let nounChunksHeading = <div></div>
     let parseTreeAHeading  =<div></div>
     let parseTreeBHeading  =<div></div>
+    let depHeading = <div></div>
 
     if (this.state.entitiesReady) {
-      entityRenderHeading = <h2>Entity Render:</h2>
-      nounChunksHeading = <h2>Noun Chunks:</h2>
+      entityRenderHeading = <h2>Entity Render</h2>
+      nounChunksHeading = <h2>Noun Chunks</h2>
       parseTreeAHeading = <h2>Parse Tree Table 1</h2>
       parseTreeBHeading = <h2>Parse Tree Table 2</h2>
+      depHeading = <h2> Dependency Tree</h2>
     }
 
     return (
@@ -232,8 +250,7 @@ class App extends Component {
           />
         </div>
         
-
-        
+         
         <div className="output-section">
           {entityRenderHeading}
           <div id="displacy-ent-out">
@@ -262,9 +279,13 @@ class App extends Component {
           </div>
         </div>
 
-        <div id="displacy-dep-out">
-          &nbsp;
+        <div className="output-section">
+          {depHeading}
+          <div id="displacy-dep-out">
+            &nbsp;
+          </div>
         </div>
+
 
       </div>
     )
