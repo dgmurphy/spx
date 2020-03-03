@@ -23,6 +23,7 @@ class App extends Component {
       nounChunks: [],
       parseTreeA: [],
       parseTreeB: [],
+      pos: [],
       entitiesReady: false
     }
 
@@ -72,8 +73,24 @@ class App extends Component {
     this.getNounChunks()
     this.getParseTreeA()
     this.getParseTreeB()
+    this.getPOS()
   }
 
+
+  getPOS() {
+    let self = this
+    let url = this.serverUrl + 'test-pos'
+
+    //console.log(this.state.textContent)
+    let posttext = this.state.textContent
+    fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ 'text': posttext})
+    }).then((res) => res.json())
+      .then((data) => self.updatePOS(data))
+      .catch((err) => console.log(err))       
+  }
   
   getParseTreeB() {
     let self = this
@@ -122,6 +139,10 @@ class App extends Component {
       .then((data) => self.updateNounChunks(data))
       .catch((err) => console.log(err)) 
 
+  }
+
+  updatePOS(data) {
+    this.setState({pos: data.pos})
   }
 
   updateNounChunks(data) {
@@ -195,6 +216,7 @@ class App extends Component {
   render() {
 
     let entityRenderHeading = <div></div>
+    let entityPOSHeading = <div></div>
     let nounChunksHeading = <div></div>
     let parseTreeAHeading  =<div></div>
     let parseTreeBHeading  =<div></div>
@@ -202,6 +224,7 @@ class App extends Component {
 
     if (this.state.entitiesReady) {
       entityRenderHeading = <h2>Entity Render</h2>
+      entityPOSHeading = <h2>Parts of Speech</h2>
       nounChunksHeading = <h2>Noun Chunks</h2>
       parseTreeAHeading = <h2>Parse Tree Table 1</h2>
       parseTreeBHeading = <h2>Parse Tree Table 2</h2>
@@ -257,6 +280,14 @@ class App extends Component {
             &nbsp;
           </div>
         </div>
+
+        <div className="output-section">
+          {entityPOSHeading}
+          <div id="pos-list">
+            <Table data={this.state.pos}/>
+          </div>
+        </div>
+        
 
         <div className="output-section">
           {nounChunksHeading}

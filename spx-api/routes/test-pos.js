@@ -4,10 +4,7 @@ var router = express.Router();
 
 router.post('/', (req, res) => {
     callName(req, res)
-    //print(str(req.body))
 })
-
-//router.post('/', callName);
 
 
 function execPy(res) {
@@ -24,9 +21,8 @@ function execPy(res) {
 
     // E.g : http://localhost:3000/name?firstname=Mike&lastname=Will 
     // so, first name = Mike and last name = Will 
-    var process = spawn('python3', ["./py/display_dep.py"])
+    var process =spawn('python3', ["./py/partsofspeech.py"])
 
-    const ls = spawn('ls', ['-lh', '.']);
 
     // Takes stdout data from script which executed 
     // with arguments and send this data to res object 
@@ -36,20 +32,20 @@ function execPy(res) {
         res.send(data);
     })
 
+    process.on('error', function(err) {
+        console.log('POS parse Error ' + err);
+    });   
+
 }
 
 
 function callName(req, res) {
 
-    //console.log(req.body)
 
     let filePath = __dirname.substring(0, __dirname.lastIndexOf("/"))
-    filePath += '/py/uploads/display-upload.txt';
+    filePath += '/py/uploads/pos-upload.txt';
 
-    let content = req.body
-    //let jsonStr = JSON.parse(content)
-    //text = jsonStr.text
-    text = content.text
+    text = req.body.text
 
     fs.writeFile(filePath, text, (err) => {
         if (err) {
@@ -57,16 +53,12 @@ function callName(req, res) {
             return
         }
 
-        console.log("//file written successfully")
+        console.log("//pos file written successfully")
         execPy(res)
 
     })
 
 }
 
-
-// router.get('/', function(req, res, next) {
-//     res.send('API is working properly');
-// });
 
 module.exports = router;
