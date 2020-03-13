@@ -3,6 +3,18 @@ import os
 from spacy import displacy
 from spacy.pipeline import EntityRuler
 import json
+from spacy.matcher import Matcher
+from spacy.tokens import Span
+
+
+def add_mgrs_ent(matcher, doc, i, matches):
+
+    # Get the current match and create tuple of entity label, start and end.
+    # Append entity to the doc's entity. (Don't overwrite doc.ents!)
+    match_id, start, end = matches[i]
+    entity = Span(doc, start, end, label="MGRS")
+    doc.ents += (entity,)
+    #print(entity.text)    
 
 # text = "When Sebastian Thrun started working on self-driving cars at Google in 2007, few people outside of the company took him seriously."
 
@@ -14,8 +26,24 @@ import json
 
 nlp = spacy.load("en_core_web_sm")
 
+matcher = Matcher(nlp.vocab)
+
+mgrs_reg = {"TEXT": {"REGEX": ".*//"}}
+#mgrs_pattern = "//MGRSCOORD: 38TQL070498//"
+#mgrs_pattern = [{"//MGRSCOORD"}, {":"}, mgrs_reg]
+mgrs_pattern = [{"TEXT": "//MGRSCOORD"}, {"TEXT": ":"}, mgrs_reg]
+
+matcher.add("MGRS", add_mgrs_ent, mgrs_pattern)
+
+
 ruler = EntityRuler(nlp)
-patterns = [{"label": "MGRS", "pattern": "//MGRSCOORD: 38TQL070498//"}]
+# patterns = [{"label": "MGRS", "pattern": mgrs_pattern},
+#             {"label": "NORP", "pattern": "BFB", "id": "bilasuvar_freedom_brigade"}
+#             ]
+patterns = [
+            {"label": "NORP", "pattern": "BFB", "id": "bilasuvar_freedom_brigade"}
+            ]
+
 ruler.add_patterns(patterns)
 nlp.add_pipe(ruler)
 
@@ -29,6 +57,13 @@ with open(path,'r') as f:
 
 
 doc = nlp(text)
+
+matches = matcher(doc)
+
+for match_id, start, end in matches:
+    string_id = nlp.vocab.strings[match_id]  # Get string representation
+    span = doc[start:end]  # The matched span
+    #print("Match: ", match_id, string_id, start, end, span.text)
 
 #sentence_spans = list(doc.sents)
 
@@ -54,3 +89,8 @@ parsed_json = json.dumps(ent_dict['spans'])
 
 print(parsed_json)
 
+
+# print("\n\n")
+# print([(ent.text, ent.label_, ent.ent_id_) for ent in doc.ents])
+# print("\n\n")
+# print([token.text for token in doc])
