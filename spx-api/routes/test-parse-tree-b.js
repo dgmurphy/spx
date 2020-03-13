@@ -32,7 +32,8 @@ function execPy(res) {
     process.stdout.on('data', function (data) {
 
         console.log(data)
-        res.send(data);
+        return res.send(data);
+        
     })
 
     process.on('error', function(err) {
